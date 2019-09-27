@@ -14,27 +14,29 @@ public class StudentOrderValidator {
      * Check all requirements to get student pay
      */
     static void checkAll(){
-        StudentOrder so = readStudentOrder();
+        while (true) {
+            StudentOrder so = readStudentOrder();
+            System.out.println("Start");
+            if (so == null) {
+                break;
+            }
+            System.out.println("Finish");
+            AnswerCityRegister cityAnswer = checkCityRegister(so);
+            if (!cityAnswer.success){
+                continue;
+            }
+            AnswerWedding wedAnswer = checkWedding(so);
+            AnswerChildren childAnswer = checkChildren(so);
+            AnswerStudent studentAnswer = checkStudent(so);
 
-        AnswerCityRegister cityAnswer = checkCityRegister(so);
-        AnswerWedding wedAnswer = checkWedding(so);
-        AnswerChildren childAnswer = checkChildren(so);
-        AnswerStudent studentAnswer = checkStudent(so);
-
-        sendMail(so);
-    }
-
-    /***
-     *
-     * @param so
-     */
-    static void sendMail(StudentOrder so) {
-
+            sendMail(so);
+        }
+        System.out.println("Finish 2");
     }
 
     static StudentOrder readStudentOrder() {
         StudentOrder so = new StudentOrder();
-        return so;
+        return null;
     }
 
     /***
@@ -42,7 +44,9 @@ public class StudentOrderValidator {
      */
     static AnswerCityRegister checkCityRegister(StudentOrder so){
         System.out.println("CityRegister is running");
-        return new AnswerCityRegister();
+        AnswerCityRegister ans = new AnswerCityRegister();
+        ans.success = false;
+        return ans;
     }
 
     /***
@@ -68,6 +72,14 @@ public class StudentOrderValidator {
     static AnswerStudent checkStudent(StudentOrder so){
         System.out.println("IsStudent is running");
         return new AnswerStudent();
+    }
+
+    /***
+     *
+     * @param so
+     */
+    static void sendMail(StudentOrder so) {
+        System.out.println("Mail sent");
     }
 
 
