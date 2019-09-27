@@ -21,6 +21,7 @@ public class StudentOrderValidator {
                 break;
             }
             System.out.println("Finish");
+
             AnswerCityRegister cityAnswer = checkCityRegister(so);
             if (!cityAnswer.success){
                 continue;
