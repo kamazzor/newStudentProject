@@ -5,10 +5,16 @@ import java.time.LocalDate;
  * Describe person from student order.
  */
 public class Person {
-    private String surName;             //фамилия
-    private String givenName;           //имя
+    protected String surName;             //фамилия
+    protected String givenName;           //имя
     private String patronymic;          //отчество
     private LocalDate dateOfBirth;      //дата рождения
+    private Address address;            //адрес
+
+    public String getPersonString(){
+        return surName + " " + givenName;
+    }
+
 
     public String getSurName() {
         return surName;
@@ -40,6 +46,14 @@ public class Person {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
 }
