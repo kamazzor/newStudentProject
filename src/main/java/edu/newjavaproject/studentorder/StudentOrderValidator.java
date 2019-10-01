@@ -14,82 +14,98 @@ import edu.newjavaproject.studentorder.validator.WeddingValidator;
  * Class where check if students from student order are valid to get student pay
  */
 public class StudentOrderValidator {
+    /***
+     * Create default examples of important validators. They are needed cause
+     * StudentOrderValidator meaningless without that validators.
+     */
+    private CityRegisterValidator cityRegisterVal;
+    private WeddingValidator weddingVal;
+    private ChildrenValidator childrenVal;
+    private StudentValidator studentVal;
+    private  MailSender mailSender;
+
+    public StudentOrderValidator(){
+        cityRegisterVal = new CityRegisterValidator();
+        weddingVal = new WeddingValidator();
+        childrenVal = new ChildrenValidator();
+        studentVal = new StudentValidator();
+        mailSender = new MailSender();
+    }
+
     public static void main(String[] args) {
-        checkAll();
+        StudentOrderValidator sov = new StudentOrderValidator();
+        sov.checkAll();
     }
 
     /***
-     * Check all requirements to get student pay
+     * Check all student orders if they fit requirements to get student pay
      */
-    static void checkAll(){
-        while (true) {
-            StudentOrder so = readStudentOrder();
-            if (so == null) {
-                break;
-            }
-            AnswerCityRegister cityAnswer = checkCityRegister(so);
-            if (!cityAnswer.success){
-                //continue;
-                break;
-            }
-            AnswerWedding wedAnswer = checkWedding(so);
-            AnswerChildren childAnswer = checkChildren(so);
-            AnswerStudent studentAnswer = checkStudent(so);
+    public void checkAll(){
+        StudentOrder[] soArray = readStudentOrders();
 
-            sendMail(so);
+        for(StudentOrder so : soArray) {
+            System.out.println();
+            checkOneOrder(so);
         }
     }
 
-    static StudentOrder readStudentOrder() {
-        StudentOrder so = new StudentOrder();
-        return so;
+    public StudentOrder[] readStudentOrders() {
+        StudentOrder[] soArray = new StudentOrder[3];       //array of student orders
+        for(int i = 0; i < soArray.length; i++) {
+            soArray[i] = SaveStudentOrder.buildStudentOrder(i);
+        }
+        return soArray;
+    }
+
+    /**
+     * Check one order if it fits requirements to get student pay
+     * @param so
+     */
+    public void checkOneOrder(StudentOrder so){
+        AnswerCityRegister cityAnswer = checkCityRegister(so);
+        AnswerWedding wedAnswer = checkWedding(so);
+        AnswerChildren childAnswer = checkChildren(so);
+        AnswerStudent studentAnswer = checkStudent(so);
+
+        sendMail(so);
+
     }
 
     /***
      * Check if Students from student order have city register in SPb
      */
-    static AnswerCityRegister checkCityRegister(StudentOrder so){
-        CityRegisterValidator crv = new CityRegisterValidator();
-        crv.hostName = "Host";
-        crv.password = "Password";
-        AnswerCityRegister ans = crv.checkCityRegister(so);
-        return ans;
+    public AnswerCityRegister checkCityRegister(StudentOrder so){
+        return cityRegisterVal.checkCityRegister(so);
     }
 
     /***
      * Check if students from student order are married
      */
-    static AnswerWedding checkWedding(StudentOrder so){
-        WeddingValidator wd = new WeddingValidator();
-        AnswerWedding answerWedding = wd.checkWedding(so);
-        return answerWedding;
+    public AnswerWedding checkWedding(StudentOrder so){
+        return weddingVal.checkWedding(so);
     }
 
     /***
      * Check if student from student order have childrens
      */
-    static AnswerChildren checkChildren(StudentOrder so){
-        ChildrenValidator cv = new ChildrenValidator();
-        AnswerChildren answerChildren = cv.checkChildren(so);
-        return answerChildren;
+    public AnswerChildren checkChildren(StudentOrder so){
+        return childrenVal.checkChildren(so);
     }
 
     /***
      * Check if students from student order are real students. Method check it using
      * city student list on special website.
      */
-    static AnswerStudent checkStudent(StudentOrder so){
-//        edu.newjavaproject.studentorder.validator.StudentValidator studentValidator = new edu.newjavaproject.studentorder.validator.StudentValidator();
-//        edu.newjavaproject.studentorder.domain.AnswerStudent answerStudent = studentValidator.checkStudent(so);
-        return new StudentValidator().checkStudent(so);
+    public AnswerStudent checkStudent(StudentOrder so){
+        return studentVal.checkStudent(so);
     }
 
     /***
      *
      * @param so
      */
-    static void sendMail(StudentOrder so) {
-        new MailSender().sendMail(so);
+    public void sendMail(StudentOrder so) {
+        mailSender.sendMail(so);
     }
 
 

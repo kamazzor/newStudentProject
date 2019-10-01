@@ -12,11 +12,12 @@ public class Adult extends Person {
     private String issueDepartment;         //кто выдал паспорт
     private String university;              //университет, в котором учится студент
 
-    @Override
-    public String getPersonString(){
-        return surName + " " + givenName + " " + passportNumber;
+    public Adult(){
     }
 
+    public Adult(String surName, String givenName, String patronymic, LocalDate dateOfBirth) {
+        super(surName, givenName, patronymic, dateOfBirth);
+    }
 
     public String getUniversity() {
         return university;

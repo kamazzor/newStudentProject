@@ -4,17 +4,22 @@ import java.time.LocalDate;
 /***
  * Describe person from student order.
  */
-public class Person {
+public abstract class Person {
     protected String surName;             //фамилия
     protected String givenName;           //имя
     private String patronymic;          //отчество
     private LocalDate dateOfBirth;      //дата рождения
     private Address address;            //адрес
 
-    public String getPersonString(){
-        return surName + " " + givenName;
+    public Person(){
     }
 
+    public Person(String surName, String givenName, String patronymic, LocalDate dateOfBirth) {
+        this.surName = surName;
+        this.givenName = givenName;
+        this.patronymic = patronymic;
+        this.dateOfBirth = dateOfBirth;
+    }
 
     public String getSurName() {
         return surName;
