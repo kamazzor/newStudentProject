@@ -1,4 +1,4 @@
-package edu.newjavaproject.studentorder.domain;
+package edu.newjavaproject.studentorder.domain.register;
 
 /***
  * Domain class contains check info if someone person from student order
@@ -7,7 +7,8 @@ package edu.newjavaproject.studentorder.domain;
  */
 public class CityRegisterCheckerResponse {
     private boolean existing;                           //есть регистрация или нет
-    private Boolean temporal = null;                    //тип регистрации
+    private Boolean temporal;                           //тип регистрации
+
 
     public boolean isExisting() {
         return existing;
@@ -23,5 +24,13 @@ public class CityRegisterCheckerResponse {
 
     public void setTemporal(Boolean temporal) {
         this.temporal = temporal;
+    }
+
+    @Override
+    public String toString() {
+        return "CityRegisterCheckerResponse{" +
+                "existing=" + existing +
+                ", temporal=" + temporal +
+                '}';
     }
 }

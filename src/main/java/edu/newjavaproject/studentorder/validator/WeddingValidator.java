@@ -1,6 +1,6 @@
 package edu.newjavaproject.studentorder.validator;
 
-import edu.newjavaproject.studentorder.domain.AnswerWedding;
+import edu.newjavaproject.studentorder.domain.wedding.AnswerWedding;
 import edu.newjavaproject.studentorder.domain.StudentOrder;
 
 /***

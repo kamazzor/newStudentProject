@@ -4,6 +4,11 @@ package edu.newjavaproject.studentorder;
  */
 
 import edu.newjavaproject.studentorder.domain.*;
+import edu.newjavaproject.studentorder.domain.children.AnswerChildren;
+import edu.newjavaproject.studentorder.domain.register.AnswerCityRegister;
+import edu.newjavaproject.studentorder.domain.student.AnswerStudent;
+import edu.newjavaproject.studentorder.domain.wedding.AnswerWedding;
+import edu.newjavaproject.studentorder.exception.CityRegisterException;
 import edu.newjavaproject.studentorder.mail.MailSender;
 import edu.newjavaproject.studentorder.validator.ChildrenValidator;
 import edu.newjavaproject.studentorder.validator.CityRegisterValidator;
@@ -32,7 +37,7 @@ public class StudentOrderValidator {
         mailSender = new MailSender();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws CityRegisterException {
         StudentOrderValidator sov = new StudentOrderValidator();
         sov.checkAll();
     }
@@ -40,11 +45,10 @@ public class StudentOrderValidator {
     /***
      * Check all student orders if they fit requirements to get student pay
      */
-    public void checkAll(){
+    public void checkAll() throws CityRegisterException {
         StudentOrder[] soArray = readStudentOrders();
 
         for(StudentOrder so : soArray) {
-            System.out.println();
             checkOneOrder(so);
         }
     }
@@ -61,20 +65,20 @@ public class StudentOrderValidator {
      * Check one order if it fits requirements to get student pay
      * @param so
      */
-    public void checkOneOrder(StudentOrder so){
+    public void checkOneOrder(StudentOrder so) throws CityRegisterException {
         AnswerCityRegister cityAnswer = checkCityRegister(so);
-        AnswerWedding wedAnswer = checkWedding(so);
-        AnswerChildren childAnswer = checkChildren(so);
-        AnswerStudent studentAnswer = checkStudent(so);
-
-        sendMail(so);
+//        AnswerWedding wedAnswer = checkWedding(so);
+//        AnswerChildren childAnswer = checkChildren(so);
+//        AnswerStudent studentAnswer = checkStudent(so);
+//
+//        sendMail(so);
 
     }
 
     /***
      * Check if Students from student order have city register in SPb
      */
-    public AnswerCityRegister checkCityRegister(StudentOrder so){
+    public AnswerCityRegister checkCityRegister(StudentOrder so) throws CityRegisterException {
         return cityRegisterVal.checkCityRegister(so);
     }
 
