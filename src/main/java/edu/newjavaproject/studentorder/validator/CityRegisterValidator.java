@@ -4,7 +4,7 @@ import edu.newjavaproject.studentorder.domain.AnswerCityRegister;
 import edu.newjavaproject.studentorder.domain.StudentOrder;
 
 /***
- * Check if Students from student order have city register in SPb
+ * Check if all people from student order (including children) have city register in SPb
  */
 public class CityRegisterValidator {
 
@@ -13,8 +13,20 @@ public class CityRegisterValidator {
     private String login;
     public String password;
 
+    /**
+     * Example of personChecker check person registration in GRN.
+     */
+    private CityRegisterChecker personChecker;
+
+    public CityRegisterValidator(){
+        personChecker = new FakeCityRegisterChecker();
+    }
+
     public AnswerCityRegister checkCityRegister(StudentOrder so){
-        System.out.println("CityRegister is running: " + hostName);
+        personChecker.checkPerson(so.getHusband());
+        personChecker.checkPerson(so.getWife());
+        personChecker.checkPerson(so.getChild());
+
         AnswerCityRegister ans = new AnswerCityRegister();
         ans.success = false;
         return ans;

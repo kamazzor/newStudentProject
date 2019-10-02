@@ -9,9 +9,10 @@ import edu.newjavaproject.studentorder.domain.StudentOrder;
  */
 public class SaveStudentOrder {
     public static void main(String[] args) {
-//        StudentOrder so = new StudentOrder();
-//        long ans = saveStudentOrder(so);
-//        System.out.println(ans);
+        buildStudentOrder(10);
+//      StudentOrder so = new StudentOrder();
+//      long ans = saveStudentOrder(so);
+//      System.out.println(ans);
     }
 
     static long saveStudentOrder(StudentOrder studentOrder){
@@ -23,9 +24,13 @@ public class SaveStudentOrder {
     public static StudentOrder buildStudentOrder(long id){
         StudentOrder so = new StudentOrder();
         so.setStudentOrderId(id);
-
-        Adult husband = new Adult("Васильев", "Андрей", "Петрович", null);
+        StudentOrder so1 = so;
+        printStudentOrder(so);
 
         return so;
+    }
+
+    private static void printStudentOrder(StudentOrder stOr) {
+        System.out.println(stOr.getStudentOrderId());
     }
 }
