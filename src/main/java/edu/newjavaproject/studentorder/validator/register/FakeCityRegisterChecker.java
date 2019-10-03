@@ -2,7 +2,7 @@ package edu.newjavaproject.studentorder.validator.register;
 
 import edu.newjavaproject.studentorder.domain.Adult;
 import edu.newjavaproject.studentorder.domain.Child;
-import edu.newjavaproject.studentorder.domain.register.CityRegisterCheckerResponse;
+import edu.newjavaproject.studentorder.domain.register.CityRegisterResponse;
 import edu.newjavaproject.studentorder.domain.Person;
 import edu.newjavaproject.studentorder.exception.CityRegisterException;
 
@@ -21,12 +21,12 @@ public class FakeCityRegisterChecker implements CityRegisterChecker {
     /**
      * Check one person registration in GRN
      * @param person
-     * @return Return CityRegisterCheckerResponse answer
+     * @return Return CityRegisterResponse answer
      * @throws CityRegisterException
      */
-    public CityRegisterCheckerResponse checkPerson(Person person) throws CityRegisterException {
+    public CityRegisterResponse checkPerson(Person person) throws CityRegisterException {
         //Проверяем, какого класса объект person: Adult или Child
-        CityRegisterCheckerResponse res = new CityRegisterCheckerResponse();
+        CityRegisterResponse res = new CityRegisterResponse();
         if (person instanceof Adult){
 //            System.out.println("ADULT");
             Adult t = (Adult) person;

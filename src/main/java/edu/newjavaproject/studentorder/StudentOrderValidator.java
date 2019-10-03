@@ -15,6 +15,9 @@ import edu.newjavaproject.studentorder.validator.CityRegisterValidator;
 import edu.newjavaproject.studentorder.validator.StudentValidator;
 import edu.newjavaproject.studentorder.validator.WeddingValidator;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Class where check if students from student order are valid to get student pay
  */
@@ -46,19 +49,20 @@ public class StudentOrderValidator {
      * Check all student orders if they fit requirements to get student pay
      */
     public void checkAll() throws CityRegisterException {
-        StudentOrder[] soArray = readStudentOrders();
+        List<StudentOrder> soList = readStudentOrders();
 
-        for(StudentOrder so : soArray) {
+        for(StudentOrder so : soList) {
             checkOneOrder(so);
         }
     }
 
-    public StudentOrder[] readStudentOrders() {
-        StudentOrder[] soArray = new StudentOrder[3];       //array of student orders
-        for(int i = 0; i < soArray.length; i++) {
-            soArray[i] = SaveStudentOrder.buildStudentOrder(i);
+    public List<StudentOrder> readStudentOrders() {
+        List<StudentOrder> soList = new LinkedList<>();       //array of student orders
+        for(int i = 0; i < 5; i++) {
+            StudentOrder so = SaveStudentOrder.buildStudentOrder(i);
+            soList.add(so);
         }
-        return soArray;
+        return soList;
     }
 
     /**

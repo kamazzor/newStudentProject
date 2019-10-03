@@ -1,11 +1,11 @@
 package edu.newjavaproject.studentorder.domain.register;
 
 /***
- * Domain class contains check info if someone person from student order
+ * Domain class contains check status from GRN if someone person from student order
  * are registered in Spb + what type of registration: permanent or temporary.
  * @return all info above into CityRegisterValidator class
  */
-public class CityRegisterCheckerResponse {
+public class CityRegisterResponse {
     private boolean existing;                           //есть регистрация или нет
     private Boolean temporal;                           //тип регистрации
 
@@ -28,7 +28,7 @@ public class CityRegisterCheckerResponse {
 
     @Override
     public String toString() {
-        return "CityRegisterCheckerResponse{" +
+        return "CityRegisterResponse{" +
                 "existing=" + existing +
                 ", temporal=" + temporal +
                 '}';
