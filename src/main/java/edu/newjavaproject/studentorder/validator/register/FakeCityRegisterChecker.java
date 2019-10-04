@@ -5,6 +5,7 @@ import edu.newjavaproject.studentorder.domain.Child;
 import edu.newjavaproject.studentorder.domain.register.CityRegisterResponse;
 import edu.newjavaproject.studentorder.domain.Person;
 import edu.newjavaproject.studentorder.exception.CityRegisterException;
+import edu.newjavaproject.studentorder.exception.TransportException;
 
 /***
  * Not real checker (stub) if someone people from student order are registered in SPb.
@@ -15,8 +16,10 @@ public class FakeCityRegisterChecker implements CityRegisterChecker {
     private static final String GOOD_2 = "2000";            //хорошая серия паспорта у жены
     private static final String BAD_1 = "1001";             //плохая серия паспорта у мужа
     private static final String BAD_2 = "2001";             //плохая серия паспорта у жены
-    private static final String ERROR_1 = "1002";           //ошибка доступа к ГРН и пр. у мужа
-    private static final String ERROR_2 = "2002";           //ошибка доступа к ГРН и пр. у жены
+    private static final String ERROR_1 = "1002";           //другая ошибка от ГРН у мужа
+    private static final String ERROR_2 = "2002";           //другая ошибка от ГРН у жены
+    private static final String ERROR_T_1 = "1003";         //транспортная ошибка доступа к ГРН и пр. у мужа
+    private static final String ERROR_T_2 = "2003";         //транспортная ошибка доступа к ГРН и пр. у жены
 
     /**
      * Check one person registration in GRN
@@ -24,7 +27,7 @@ public class FakeCityRegisterChecker implements CityRegisterChecker {
      * @return Return CityRegisterResponse answer
      * @throws CityRegisterException
      */
-    public CityRegisterResponse checkPerson(Person person) throws CityRegisterException {
+    public CityRegisterResponse checkPerson(Person person) throws CityRegisterException, TransportException {
         //Проверяем, какого класса объект person: Adult или Child
         CityRegisterResponse res = new CityRegisterResponse();
         if (person instanceof Adult){
@@ -39,7 +42,11 @@ public class FakeCityRegisterChecker implements CityRegisterChecker {
                 res.setExisting(false);
             }
             if ((ps.equals(ERROR_1)) || ps.equals(ERROR_2)){
-                CityRegisterException ex = new CityRegisterException("Fake ERROR " + ps);
+                CityRegisterException ex = new CityRegisterException("1", "GRN ERROR " + ps);
+                throw ex;
+            }
+            if ((ps.equals(ERROR_T_1)) || ps.equals(ERROR_T_2)){
+                TransportException ex = new TransportException("Transport ERROR " + ps);
                 throw ex;
             }
         }
