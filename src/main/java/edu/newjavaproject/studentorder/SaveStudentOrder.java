@@ -2,14 +2,28 @@ package edu.newjavaproject.studentorder;
 
 import edu.newjavaproject.studentorder.domain.*;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.time.LocalDate;
 
 /***
  * Main class where project start
  */
 public class SaveStudentOrder {
-    public static void main(String[] args) {
-        buildStudentOrder(10);
+    public static void main(String[] args) throws Exception{
+        //Get connection with jc_student database
+        Class.forName("org.postgresql.Driver");
+        Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/jc_student",
+                "postgres", "postgres");
+
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM jc_street");
+        while (rs.next()) {
+            System.out.println(rs.getLong(1) + " : "  + rs.getString(2));
+        }
+//      buildStudentOrder(10);
 //      StudentOrder so = new StudentOrder();
 //      long ans = saveStudentOrder(so);
 //      System.out.println(ans);

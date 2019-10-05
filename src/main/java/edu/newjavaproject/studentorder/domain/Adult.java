@@ -11,6 +11,7 @@ public class Adult extends Person {
     private LocalDate issueDate;            //дата выдачи
     private String issueDepartment;         //кто выдал паспорт
     private String university;              //университет, в котором учится студент
+    private String studentId;               //номер студбилета
 
     public Adult(){
     }
@@ -34,8 +35,6 @@ public class Adult extends Person {
     public void setStudentId(String studentId) {
         this.studentId = studentId;
     }
-
-    private String studentId;               //номер студенческого билета
 
     public String getPassportSeria() {
         return passportSeria;
