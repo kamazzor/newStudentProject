@@ -1,5 +1,6 @@
 package edu.newjavaproject.studentorder.dao;
 
+import edu.newjavaproject.studentorder.config.Config;
 import edu.newjavaproject.studentorder.domain.Street;
 import edu.newjavaproject.studentorder.exception.DaoException;
 
@@ -22,8 +23,10 @@ public class DictionaryDaoImpl implements DictionaryDao {
 
     //Соединяемся с таблицей jc_student
     private Connection getConnection() throws SQLException {
-        Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/jc_student",
-                "postgres", "postgres");
+        Connection con = DriverManager.getConnection(
+                Config.getProperty(Config.DB_URL),
+                Config.getProperty(Config.DB_LOGIN),
+                Config.getProperty(Config.DB_PASSWORD));
         return con;
     }
 
@@ -31,6 +34,8 @@ public class DictionaryDaoImpl implements DictionaryDao {
     public List<Street> findStreets(String pattern) throws DaoException {
         //Найденные после запроса с паттерном улицы.
         List<Street> result = new LinkedList<>();
+
+        //Устанавливаем соединение с БД и делаем запрос на улицы по паттерну.
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(GET_STREET)) {
 
