@@ -13,16 +13,9 @@ import java.time.LocalDate;
  */
 public class SaveStudentOrder {
     public static void main(String[] args) throws Exception{
-        //Get connection with jc_student database
-        Class.forName("org.postgresql.Driver");
-        Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/jc_student",
-                "postgres", "postgres");
-
-        Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM jc_street");
-        while (rs.next()) {
-            System.out.println(rs.getLong(1) + " : "  + rs.getString(2));
-        }
+        //Unnecessary
+//        Get connection with jc_student database
+//        Class.forName("org.postgresql.Driver");
 //      buildStudentOrder(10);
 //      StudentOrder so = new StudentOrder();
 //      long ans = saveStudentOrder(so);
@@ -42,7 +35,9 @@ public class SaveStudentOrder {
         so.setMarriageDate((LocalDate.of(2016, 7,14)));
         so.setMarriageOffice("Отдел ЗАГС");
 
-        Address address = new Address("195000", "Заневский пр.", "12", "", "142");
+        Street street = new Street(1, "First street");
+
+        Address address = new Address("195000", street, "12", "", "142");
 
         //Муж
         Adult husband = new Adult("Петров", "Виктор", "Сергеевич", LocalDate.of(1997, 8, 24));

@@ -2,12 +2,12 @@ package edu.newjavaproject.studentorder.domain;
 
 public class Address {
     private String postcode;            //индекс
-    private String street;              //улица
+    private Street street;              //улица
     private String building;            //дом
     private String extension;           //корпус
     private String apartment;           //квартира
 
-    public Address(String postcode, String street, String building, String extension, String apartment) {
+    public Address(String postcode, Street street, String building, String extension, String apartment) {
         this.postcode = postcode;
         this.street = street;
         this.building = building;
@@ -23,11 +23,11 @@ public class Address {
         this.postcode = postcode;
     }
 
-    public String getStreet() {
+    public Street getStreet() {
         return street;
     }
 
-    public void setStreet(String street) {
+    public void setStreet(Street street) {
         this.street = street;
     }
 
