@@ -1,5 +1,6 @@
 package edu.newjavaproject.studentorder;
 
+import edu.newjavaproject.studentorder.dao.DictionaryDaoImpl;
 import edu.newjavaproject.studentorder.domain.*;
 
 import java.sql.Connection;
@@ -7,12 +8,17 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.List;
 
 /***
  * Main class where project start
  */
 public class SaveStudentOrder {
     public static void main(String[] args) throws Exception{
+        List<Street> d = new DictionaryDaoImpl().findStreets("ec");
+        for (Street s : d){
+            System.out.println(s.getStreetName());
+        }
         //Unnecessary
 //        Get connection with jc_student database
 //        Class.forName("org.postgresql.Driver");
