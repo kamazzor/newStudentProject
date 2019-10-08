@@ -29,6 +29,26 @@ public class SaveStudentOrder {
             System.out.println(r.getOfficeName());
         }
 
+        List<CountryArea> ca1 = new DictionaryDaoImpl().findAreas("");
+        for (CountryArea c : ca1) {
+            System.out.println(c.getAreaId() + " : " + c.getAreaName());
+        }
+        System.out.println("------------------------");
+        List<CountryArea> ca2 = new DictionaryDaoImpl().findAreas("020000000000");
+        for (CountryArea c : ca2) {
+            System.out.println(c.getAreaId() + " : " + c.getAreaName());
+        }
+        System.out.println("------------------------");
+        List<CountryArea> ca3 = new DictionaryDaoImpl().findAreas("020010000000");
+        for (CountryArea c : ca3) {
+            System.out.println(c.getAreaId() + " : " + c.getAreaName());
+        }
+        System.out.println("------------------------");
+        List<CountryArea> ca4 = new DictionaryDaoImpl().findAreas("020010010000");
+        for (CountryArea c : ca4) {
+            System.out.println(c.getAreaId() + " : " + c.getAreaName());
+        }
+
         //Unnecessary
 //        Get connection with jc_student database
 //        Class.forName("org.postgresql.Driver");

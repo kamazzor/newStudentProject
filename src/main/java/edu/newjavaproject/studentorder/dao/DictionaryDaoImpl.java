@@ -1,6 +1,7 @@
 package edu.newjavaproject.studentorder.dao;
 
 import edu.newjavaproject.studentorder.config.Config;
+import edu.newjavaproject.studentorder.domain.CountryArea;
 import edu.newjavaproject.studentorder.domain.PassportOffice;
 import edu.newjavaproject.studentorder.domain.RegisterOffice;
 import edu.newjavaproject.studentorder.domain.Street;
@@ -27,6 +28,10 @@ public class DictionaryDaoImpl implements DictionaryDao {
     //Параметризованный SQL-запрос на поиск ЗАГСов в таблице jc_register_office
     private static final String GET_REGISTER = "select * from jc_register_office " +
             "where r_office_area_id = ?";
+    //Параметризованный SQL-запрос на поиск нужных подуровней
+    // (край, область, район, поселение и т.п.) в таблице jc_country_struct
+    private static final String GET_AREA = "select * from jc_country_struct " +
+            "where area_id like ? and area_id <> ?";
 
 
     //Соединяемся с таблицей jc_student
@@ -61,6 +66,11 @@ public class DictionaryDaoImpl implements DictionaryDao {
         return result;
     }
 
+    /***
+     * @param areaId OKATO code of area where necessary ZAGS is
+     * @return
+     * @throws DaoException
+     */
     @Override
     public List<PassportOffice> findPassportOffices(String areaId) throws DaoException {
         //Найденные после запроса с паттерном паспортные столы.
@@ -108,5 +118,45 @@ public class DictionaryDaoImpl implements DictionaryDao {
             throw new DaoException(e);
         }
         return result;
+    }
+
+    @Override
+    public List<CountryArea> findAreas(String areaId) throws DaoException {
+        //Найденные после запроса с паттерном ЗАГСы.
+        List<CountryArea> result = new LinkedList<>();
+
+        //Устанавливаем соединение с БД и делаем запрос на улицы по паттерну.
+        try (Connection con = getConnection();
+             PreparedStatement stmt = con.prepareStatement(GET_AREA)) {
+
+            String param1 = buildParam(areaId);
+            String param2 = areaId;
+
+            stmt.setString(1, param1);
+            stmt.setString(2, param2);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                CountryArea ca = new CountryArea(
+                        rs.getString("area_id"),
+                        rs.getString("area_name"));
+                result.add(ca);
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        return result;
+    }
+
+    private String buildParam(String areaId) throws SQLException{
+        if (areaId == null || areaId.trim().isEmpty()){
+            return "__0000000000";
+        } else if (areaId.endsWith("0000000000")){
+            return areaId.substring(0, 2) + "___0000000";
+        } else if (areaId.endsWith("0000000")){
+            return areaId.substring(0, 5) + "___0000";
+        } else if (areaId.endsWith("0000")){
+            return areaId.substring(0, 8) + "____";
+        }
+        throw new SQLException("Invalid parameter 'areaID': " + areaId);
     }
 }

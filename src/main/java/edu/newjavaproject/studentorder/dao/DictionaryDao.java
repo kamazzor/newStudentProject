@@ -1,5 +1,6 @@
 package edu.newjavaproject.studentorder.dao;
 
+import edu.newjavaproject.studentorder.domain.CountryArea;
 import edu.newjavaproject.studentorder.domain.PassportOffice;
 import edu.newjavaproject.studentorder.domain.RegisterOffice;
 import edu.newjavaproject.studentorder.domain.Street;
@@ -18,18 +19,28 @@ public interface DictionaryDao {
 
     /***
      * Search for necessary passport offices in jc_passport_office table by
-     * OKATO code typed in Web-form (areaId code)
+     * OKATO code typed in web-form (areaId code)
      * @param areaId OKATO code of area where necessary ZAGS is
      * @return List of Passport Offices found by areaId pattern
      * @throws DaoException
      */
     public List<PassportOffice> findPassportOffices(String areaId) throws DaoException;
+
     /***
      * Search for necessary ZAGSes in jc_register_office table by
-     * OKATO code typed in Web-form (areaId code)
+     * OKATO code typed in web-form (areaId code)
      * @param areaId OKATO code of area where needed ZAGSes is
      * @return List of Register offices (ZAGSes) found by areaId pattern
      * @throws DaoException
      */
     public List<RegisterOffice> findRegisterOffices(String areaId) throws DaoException;
+
+    /***
+     * Search for necessary country areas in jc_country_struct table by
+     * OKATO code template (areaId)
+     * @param areaId OKATO code template of area where needed country area is
+     * @return List of CountryAreas found by areaId template
+     * @throws DaoException
+     */
+    public List<CountryArea> findAreas(String areaId) throws DaoException;
 }
