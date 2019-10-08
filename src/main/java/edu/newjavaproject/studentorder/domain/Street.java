@@ -1,5 +1,7 @@
 package edu.newjavaproject.studentorder.domain;
-
+/***
+ * Domain class describe street where person from student order registered
+ */
 public class Street {
     private long streetCode;
     private String streetName;

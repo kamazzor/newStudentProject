@@ -1,5 +1,7 @@
 package edu.newjavaproject.studentorder.domain;
-
+/***
+ * Domain class describe address of {@link Person} from student order
+ */
 public class Address {
     private String postcode;            //индекс
     private Street street;              //улица
@@ -54,4 +56,6 @@ public class Address {
     public void setApartment(String apartment) {
         this.apartment = apartment;
     }
+    
+
 }

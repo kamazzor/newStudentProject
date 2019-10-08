@@ -3,15 +3,15 @@ package edu.newjavaproject.studentorder.domain;
 import java.time.LocalDate;
 
 /***
- * Describe adult from student order. Class extends Person class
+ * Domain class describe adult from student order.
  */
 public class Adult extends Person {
-    private String passportSeria;           //серия паспорта
-    private String passportNumber;          //номер паспорта
-    private LocalDate issueDate;            //дата выдачи
-    private String issueDepartment;         //кто выдал паспорт
-    private String university;              //университет, в котором учится студент
-    private String studentId;               //номер студбилета
+    private String passportSeria;                   //серия паспорта
+    private String passportNumber;                  //номер паспорта
+    private LocalDate issueDate;                    //дата выдачи
+    private PassportOffice issueDepartment;         //кто выдал паспорт
+    private String university;                      //университет, в котором учится студент
+    private String studentId;                       //номер студбилета
 
     public Adult(){
     }
@@ -60,11 +60,11 @@ public class Adult extends Person {
         this.issueDate = issueDate;
     }
 
-    public String getIssueDepartment() {
+    public PassportOffice getIssueDepartment() {
         return issueDepartment;
     }
 
-    public void setIssueDepartment(String issueDepartment) {
+    public void setIssueDepartment(PassportOffice issueDepartment) {
         this.issueDepartment = issueDepartment;
     }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 /***
  * Domain class contains the check results if all people from student order are registered in SPb.
  * If some persons aren't registered , class contains info why.
- * Info about city register status of each student order is in sepate cell of List<AnswerCityRegisterItem>
+ * Info about city register status of each student order is in sepate cell of List of AnswerCityRegisterItem
  */
 public class AnswerCityRegister {
     private List<AnswerCityRegisterItem> items;

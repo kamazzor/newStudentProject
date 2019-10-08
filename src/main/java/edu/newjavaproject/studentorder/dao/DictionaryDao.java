@@ -1,5 +1,7 @@
 package edu.newjavaproject.studentorder.dao;
 
+import edu.newjavaproject.studentorder.domain.PassportOffice;
+import edu.newjavaproject.studentorder.domain.RegisterOffice;
 import edu.newjavaproject.studentorder.domain.Street;
 import edu.newjavaproject.studentorder.exception.DaoException;
 
@@ -11,6 +13,23 @@ import java.util.List;
  * jc_passport_office, jc_country_struct, jc_student_child)
  */
 public interface DictionaryDao {
-    //Ищем в таблице jc_street улицы по введенному в заявочную веб-форму образцу
+    //Search for street in jc_street table by pattern typed in application web-form
     public List<Street> findStreets(String pattern) throws DaoException;
+
+    /***
+     * Search for necessary passport offices in jc_passport_office table by
+     * OKATO code typed in Web-form (areaId code)
+     * @param areaId OKATO code of area where necessary ZAGS is
+     * @return List of Passport Offices found by areaId pattern
+     * @throws DaoException
+     */
+    public List<PassportOffice> findPassportOffices(String areaId) throws DaoException;
+    /***
+     * Search for necessary ZAGSes in jc_register_office table by
+     * OKATO code typed in Web-form (areaId code)
+     * @param areaId OKATO code of area where needed ZAGSes is
+     * @return List of Register offices (ZAGSes) found by areaId pattern
+     * @throws DaoException
+     */
+    public List<RegisterOffice> findRegisterOffices(String areaId) throws DaoException;
 }

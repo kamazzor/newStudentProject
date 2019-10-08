@@ -8,7 +8,7 @@ import edu.newjavaproject.studentorder.exception.TransportException;
 /***
  * Check if someone person from student order are registered in Spb +
  * what type of registration: permanent or temporary.
- * @return all info above into CityRegisterValidator class
+ * Return all info above into CityRegisterValidator class
  */
 
 public class RealCityRegisterChecker implements CityRegisterChecker {

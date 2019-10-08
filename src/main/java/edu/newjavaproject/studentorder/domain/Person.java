@@ -2,7 +2,7 @@ package edu.newjavaproject.studentorder.domain;
 
 import java.time.LocalDate;
 /***
- * Describe person from student order.
+ * Domain class describe person from student order.
  */
 public abstract class Person {
     protected String surName;             //фамилия
