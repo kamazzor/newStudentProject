@@ -65,28 +65,39 @@ public class StudentOrderDaoImpl implements StudentOrderDao{
         //Устанавливаем соединение с БД и делаем запрос на улицы по паттерну.
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(INSERT_ORDER, new String[] {"student_order_id"} )) {
-            
-            //Header
-            stmt.setInt(1, StudentOrderStatus.START.ordinal());
-            stmt.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
 
-            //Husband and wife
-            setParamsForAdult(stmt, 3, so.getHusband());
-            setParamsForAdult(stmt, 16, so.getWife());
+            //Use transaction
+            con.setAutoCommit(false);
+            try {
+                //Header
+                stmt.setInt(1, StudentOrderStatus.START.ordinal());
+                stmt.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
 
-            //Marriage
-            stmt.setString(29, so.getMarriageCertificateId());
-            stmt.setLong(30, so.getMarriageOffice().getOfficeId());
-            stmt.setDate(31, Date.valueOf(so.getMarriageDate()));
+                //Husband and wife
+                setParamsForAdult(stmt, 3, so.getHusband());
+                setParamsForAdult(stmt, 16, so.getWife());
 
-            stmt.executeUpdate();
+                //Marriage
+                stmt.setString(29, so.getMarriageCertificateId());
+                stmt.setLong(30, so.getMarriageOffice().getOfficeId());
+                stmt.setDate(31, Date.valueOf(so.getMarriageDate()));
 
-            ResultSet gkRs = stmt.getGeneratedKeys();
-            if (gkRs.next()){
-                result = gkRs.getLong(1);
+                stmt.executeUpdate();
+
+                ResultSet gkRs = stmt.getGeneratedKeys();
+                if (gkRs.next()) {
+                    result = gkRs.getLong(1);
+                }
+
+                //Childrens
+                saveChildren(con, so, result);
+                // Commit transaction
+                con.commit();
+            } catch (SQLException e){
+                //Rollback all commits from transaction
+                con.rollback();
+                throw e;
             }
-
-            saveChildren(con, so, result);
 
         } catch (SQLException e) {
             throw new DaoException(e);
