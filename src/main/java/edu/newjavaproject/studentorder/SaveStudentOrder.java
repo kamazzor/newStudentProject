@@ -54,7 +54,8 @@ public class SaveStudentOrder {
 
         StudentOrder s = buildStudentOrder(10);
         StudentOrderDao dao = new StudentOrderDaoImpl();
-        dao.saveStudentOrder(s);
+        Long id = dao.saveStudentOrder(s);                  //ID of last added student order in out database
+        System.out.println(id);
         //Unnecessary
 //        Get connection with jc_student database
 //        Class.forName("org.postgresql.Driver");

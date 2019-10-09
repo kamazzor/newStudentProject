@@ -9,6 +9,10 @@ import edu.newjavaproject.studentorder.exception.DaoException;
 import java.sql.*;
 import java.time.LocalDateTime;
 
+/***
+ * That class implements methods and fields of {@link StudentOrderDao} interface.
+ * Class help to save student order data from web-form to the database.
+ */
 public class StudentOrderDaoImpl implements StudentOrderDao{
     public static final String INSERT_ORDER =
             "INSERT INTO jc_student_order(" +
@@ -38,13 +42,20 @@ public class StudentOrderDaoImpl implements StudentOrderDao{
                 Config.getProperty(Config.DB_PASSWORD));
         return con;
     }
-    
+
+    /***
+     *  That method save student order data from web-form to the database.
+     * @param so new student order
+     * @return number of inserted recordings into jc_student_order table
+     * @throws DaoException
+     */
     @Override
     public Long saveStudentOrder(StudentOrder so) throws DaoException {
+        Long result = -1L;          //ID of last added student order in out database
+
         //Устанавливаем соединение с БД и делаем запрос на улицы по паттерну.
-        Long i;
         try (Connection con = getConnection();
-             PreparedStatement stmt = con.prepareStatement(INSERT_ORDER)) {
+             PreparedStatement stmt = con.prepareStatement(INSERT_ORDER, new String[] {"student_order_id"} )) {
             
             //Header
             stmt.setInt(1, StudentOrderStatus.START.ordinal());
@@ -87,13 +98,17 @@ public class StudentOrderDaoImpl implements StudentOrderDao{
             stmt.setLong(30, so.getMarriageOffice().getOfficeId());
             stmt.setDate(31, Date.valueOf(so.getMarriageDate()));
 
-            i = (long) stmt.executeUpdate();
-            System.out.println(i);
+            stmt.executeUpdate();
+
+            ResultSet gkRs = stmt.getGeneratedKeys();
+            if (gkRs.next()){
+                result = gkRs.getLong(1);
+            }
 
         } catch (SQLException e) {
             throw new DaoException(e);
         }
         // TODO: 10/9/2019 return Long
-        return i;
+        return result;
     }
 }
