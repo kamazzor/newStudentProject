@@ -60,38 +60,10 @@ public class StudentOrderDaoImpl implements StudentOrderDao{
             //Header
             stmt.setInt(1, StudentOrderStatus.START.ordinal());
             stmt.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
-            
-            //Husband
-            Adult husband = so.getHusband();
-            stmt.setString(3, husband.getSurName());
-            stmt.setString(4, husband.getGivenName());
-            stmt.setString(5, husband.getPatronymic());
-            stmt.setDate(6, Date.valueOf(husband.getDateOfBirth()));
-            stmt.setString(7, husband.getPassportSeria());
-            stmt.setString(8, husband.getPassportNumber());
-            stmt.setDate(9, Date.valueOf(husband.getIssueDate()));
-            stmt.setLong(10, husband.getIssueDepartment().getOfficeId());
-            stmt.setString(11, husband.getAddress().getPostcode());
-            stmt.setLong(12, husband.getAddress().getStreet().getStreetCode());
-            stmt.setString(13, husband.getAddress().getBuilding());
-            stmt.setString(14, husband.getAddress().getExtension());
-            stmt.setString(15, husband.getAddress().getApartment());
 
-            //Wife
-            Adult wife = so.getWife();
-            stmt.setString(16, wife.getSurName());
-            stmt.setString(17, wife.getGivenName());
-            stmt.setString(18, wife.getPatronymic());
-            stmt.setDate(19, Date.valueOf(wife.getDateOfBirth()));
-            stmt.setString(20, wife.getPassportSeria());
-            stmt.setString(21, wife.getPassportNumber());
-            stmt.setDate(22, Date.valueOf(wife.getIssueDate()));
-            stmt.setLong(23, wife.getIssueDepartment().getOfficeId());
-            stmt.setString(24, wife.getAddress().getPostcode());
-            stmt.setLong(25, wife.getAddress().getStreet().getStreetCode());
-            stmt.setString(26, wife.getAddress().getBuilding());
-            stmt.setString(27, wife.getAddress().getExtension());
-            stmt.setString(28, wife.getAddress().getApartment());
+            //Husband and wife
+            setParamsForAdult(stmt, 3, so.getHusband());
+            setParamsForAdult(stmt, 16, so.getWife());
 
             //Marriage
             stmt.setString(29, so.getMarriageCertificateId());
@@ -108,7 +80,29 @@ public class StudentOrderDaoImpl implements StudentOrderDao{
         } catch (SQLException e) {
             throw new DaoException(e);
         }
-        // TODO: 10/9/2019 return Long
         return result;
+    }
+
+    /***
+     * Insert parameters into SQL query to save student order into our database
+     * @param stmt  SQL query template INSERT_ORDER
+     * @param start start parameterIndex of stmt
+     * @param adult Adult for whom stmt params are configured
+     * @throws SQLException
+     */
+    private void setParamsForAdult(PreparedStatement stmt, int start, Adult adult) throws SQLException {
+        stmt.setString(start, adult.getSurName());
+        stmt.setString(start + 1, adult.getGivenName());
+        stmt.setString(start + 2, adult.getPatronymic());
+        stmt.setDate(start + 3, Date.valueOf(adult.getDateOfBirth()));
+        stmt.setString(start + 4, adult.getPassportSeria());
+        stmt.setString(start + 5, adult.getPassportNumber());
+        stmt.setDate(start + 6, Date.valueOf(adult.getIssueDate()));
+        stmt.setLong(start + 7, adult.getIssueDepartment().getOfficeId());
+        stmt.setString(start + 8, adult.getAddress().getPostcode());
+        stmt.setLong(start + 9, adult.getAddress().getStreet().getStreetCode());
+        stmt.setString(start + 10, adult.getAddress().getBuilding());
+        stmt.setString(start + 11, adult.getAddress().getExtension());
+        stmt.setString(start + 12, adult.getAddress().getApartment());
     }
 }
