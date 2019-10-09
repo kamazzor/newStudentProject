@@ -106,7 +106,7 @@ public class SaveStudentOrder {
         //Child 1
         Child child1 = new Child("Петрова", "Ирина", "Викторовна", LocalDate.of(2018, 6, 29));
         child1.setCertificateNumber("" + (300000 + id));
-        child1.setIssueDate(LocalDate.of(2018, 4, 5));
+        child1.setIssueDate(LocalDate.of(2018, 6, 11));
         RegisterOffice ro2 = new RegisterOffice(2, "", "");
         child1.setIssueDepartment(ro2);
         child1.setAddress(address);
@@ -114,7 +114,7 @@ public class SaveStudentOrder {
         //Child 2
         Child child2 = new Child("Петрова", "Евгений", "Викторович", LocalDate.of(2018, 6, 29));
         child2.setCertificateNumber("" + (400000 + id));
-        child2.setIssueDate(LocalDate.of(2018, 4, 5));
+        child2.setIssueDate(LocalDate.of(2018, 7, 19));
         RegisterOffice ro3 = new RegisterOffice(3, "", "");
         child2.setIssueDepartment(ro3);
         child2.setAddress(address);
