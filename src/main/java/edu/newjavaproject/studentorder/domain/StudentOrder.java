@@ -1,6 +1,7 @@
 package edu.newjavaproject.studentorder.domain;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,9 @@ import java.util.List;
  * Class containt the data from example of student order.
  */
 public class StudentOrder {
-    private long studentOrderId;            //номер студенческой заявки
+    private long studentOrderId;                    //номер студенческой заявки
+    private StudentOrderStatus studentOrderStatus;   //статус студенческой заявки
+    private LocalDateTime studentOrderDate;         //дата и время подачи студенческой заявки
     private Adult husband;
     private Adult wife;
     private List<Child> children;
@@ -16,6 +19,21 @@ public class StudentOrder {
     private RegisterOffice marriageOffice;
     private LocalDate marriageDate;
 
+    public StudentOrderStatus getStudentOrderStatus() {
+        return studentOrderStatus;
+    }
+
+    public void setStudentOrderStatus(StudentOrderStatus studentOrderStatus) {
+        this.studentOrderStatus = studentOrderStatus;
+    }
+
+    public LocalDateTime getStudentOrderDate() {
+        return studentOrderDate;
+    }
+
+    public void setStudentOrderDate(LocalDateTime studentOrderDate) {
+        this.studentOrderDate = studentOrderDate;
+    }
 
     public String getMarriageCertificateId() {
         return marriageCertificateId;

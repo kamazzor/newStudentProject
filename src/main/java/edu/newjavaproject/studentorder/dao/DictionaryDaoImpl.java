@@ -34,6 +34,7 @@ public class DictionaryDaoImpl implements DictionaryDao {
             "where area_id like ? and area_id <> ?";
 
 
+    // TODO: 10/9/2019 refactoring - make one method
     //Соединяемся с таблицей jc_student
     private Connection getConnection() throws SQLException {
         Connection con = DriverManager.getConnection(
@@ -63,6 +64,7 @@ public class DictionaryDaoImpl implements DictionaryDao {
         } catch (SQLException e) {
             throw new DaoException(e);
         }
+
         return result;
     }
 
@@ -76,7 +78,7 @@ public class DictionaryDaoImpl implements DictionaryDao {
         //Найденные после запроса с паттерном паспортные столы.
         List<PassportOffice> result = new LinkedList<>();
 
-        //Устанавливаем соединение с БД и делаем запрос на улицы по паттерну.
+        //Устанавливаем соединение с БД и делаем запрос на паспортные столы по паттерну.
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(GET_PASSPORT)) {
 
@@ -125,7 +127,7 @@ public class DictionaryDaoImpl implements DictionaryDao {
         //Найденные после запроса с паттерном ЗАГСы.
         List<CountryArea> result = new LinkedList<>();
 
-        //Устанавливаем соединение с БД и делаем запрос на улицы по паттерну.
+        //Устанавливаем соединение с БД и делаем запрос на ЗАГСы по паттерну.
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(GET_AREA)) {
 
