@@ -5,8 +5,8 @@ Applicant submits an application using web form. Programm check each item of app
 
 Used technologies:
 
-Data Base - PostreSQL 11, pgAdmin 4
+Data Base - <b>PostreSQL 11, pgAdmin 4</b>
 
-Project management - Maven, JUnit 4
+Project management - <b>Maven, JUnit 4</b>
 
-(In progress) Framework - Spring Boot
+(<i>In progress</i>) Framework - <b>Spring Boot</b> 
