@@ -10,7 +10,7 @@ public class Adult extends Person {
     private String passportNumber;                  //номер паспорта
     private LocalDate issueDate;                    //дата выдачи
     private PassportOffice issueDepartment;         //кто выдал паспорт
-    private String university;                      //университет, в котором учится студент
+    private University university;                  //университет, в котором учится студент
     private String studentId;                       //номер студбилета
 
     public Adult(){
@@ -20,11 +20,11 @@ public class Adult extends Person {
         super(surName, givenName, patronymic, dateOfBirth);
     }
 
-    public String getUniversity() {
+    public University getUniversity() {
         return university;
     }
 
-    public void setUniversity(String university) {
+    public void setUniversity(University university) {
         this.university = university;
     }
 

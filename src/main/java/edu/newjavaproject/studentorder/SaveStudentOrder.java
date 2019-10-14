@@ -56,6 +56,14 @@ public class SaveStudentOrder {
         StudentOrderDao dao = new StudentOrderDaoImpl();
         Long id = dao.saveStudentOrder(s);                  //ID of last added student order in out database
         System.out.println(id);
+        //Разделитель
+        System.out.println();
+
+        //Список студенческих заявок, сохраненных в БД
+        List<StudentOrder> soList = dao.getStudentOrders();
+        for (StudentOrder so : soList) {
+            System.out.println(so.getStudentOrderId());
+        }
         //Unnecessary
 //        Get connection with jc_student database
 //        Class.forName("org.postgresql.Driver");
@@ -92,6 +100,9 @@ public class SaveStudentOrder {
         husband.setIssueDepartment(po1);
         husband.setStudentId("" + (100000 + id));
         husband.setAddress(address);
+        husband.setUniversity(new University(2L, ""));
+        husband.setStudentId("HH12345");
+
 
         //Wife
         Adult wife = new Adult("Петрова", "Вероника", "Алексеевна", LocalDate.of(1998, 3, 12));
@@ -102,6 +113,9 @@ public class SaveStudentOrder {
         wife.setIssueDepartment(po2);
         wife.setStudentId("" + (200000 + id));
         wife.setAddress(address);
+        wife.setUniversity(new University(1L, ""));
+        wife.setStudentId("WW12345");
+
 
         //Child 1
         Child child1 = new Child("Петрова", "Ирина", "Викторовна", LocalDate.of(2018, 6, 29));
