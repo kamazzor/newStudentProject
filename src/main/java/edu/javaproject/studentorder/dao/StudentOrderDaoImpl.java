@@ -49,7 +49,8 @@ public class StudentOrderDaoImpl implements StudentOrderDao{
                     "?, ?);";
 
     public static final String SELECT_ORDERS =
-            "SELECT * FROM jc_student_order " +
+            "SELECT so.*, ro.r_office_area_id, ro.r_office_name FROM jc_student_order so " +
+            "INNER JOIN jc_register_office ro ON ro.r_office_id = so.register_office_id " +
             "WHERE student_order_status = 0 ORDER BY student_order_date";
 
     // TODO: 10/9/2019 refactoring - make one method
@@ -133,6 +134,7 @@ public class StudentOrderDaoImpl implements StudentOrderDao{
                 so.setHusband(husband);
                 so.setWife(wife);
 
+
                 // TODO: 10/14/2019 fill other fields of StudentOrder
 
                 result.add(so);
@@ -145,12 +147,12 @@ public class StudentOrderDaoImpl implements StudentOrderDao{
         }
         return result;
     }
-
+    //---------------------------------------------------------------------
     /**
-     *
-     * @param rs
-     * @param prefix
-     * @return
+     *  Fill husband and wife fields of StudentOrder example with data from our database.
+     * @param rs ResultSet after executing SELECT_ORDERS query
+     * @param prefix Prefix h_ or w_ of columnlabel of ResultSet obtained after SELECT_ORDERS query
+     * @return Return Adult object
      * @throws SQLException
      */
     private Adult fillAdult(ResultSet rs, String prefix) throws SQLException {
@@ -185,8 +187,8 @@ public class StudentOrderDaoImpl implements StudentOrderDao{
 
     /**
      * Fill header fields of StudentOrder example with data from our database.
-     * @param rs
-     * @param so
+     * @param rs ResultSet after executing SELECT_ORDERS query
+     * @param so Example of Student order where we save student order data from our database
      * @throws SQLException
      */
     private void fillStudentOrder(ResultSet rs, StudentOrder so) throws SQLException {
@@ -197,8 +199,8 @@ public class StudentOrderDaoImpl implements StudentOrderDao{
 
     /**
      * Fill marriage fields of StudentOrder example with data from our database.
-     * @param rs
-     * @param so
+     * @param rs ResultSet after executing SELECT_ORDERS query
+     * @param so Example of Student order where we save student order data from our database
      * @throws SQLException
      */
     private void fillMarriage(ResultSet rs, StudentOrder so) throws SQLException {
@@ -208,11 +210,12 @@ public class StudentOrderDaoImpl implements StudentOrderDao{
         //Затычка офиса бракосочетания, пока мы не вынули данные из нужной таблицы
         //для получения реальных данных этого офиса.
         Long roId = rs.getLong("register_office_id");
-        RegisterOffice ro = new RegisterOffice(roId, "", "");
-
+        String areaId = rs.getString("r_office_area_id");
+        String areaName = rs.getString("r_office_name");
+        RegisterOffice ro = new RegisterOffice(roId, areaId, areaName);
         so.setMarriageOffice(ro);
     }
-
+    //----------------------------------------------------------------------------------
     /***
      * That method save children data from student order application web form to our database
      * @param con Example of connection with our database
