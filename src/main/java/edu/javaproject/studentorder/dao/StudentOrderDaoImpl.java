@@ -49,9 +49,14 @@ public class StudentOrderDaoImpl implements StudentOrderDao{
                     "?, ?);";
 
     public static final String SELECT_ORDERS =
-            "SELECT so.*, ro.r_office_area_id, ro.r_office_name FROM jc_student_order so " +
-            "INNER JOIN jc_register_office ro ON ro.r_office_id = so.register_office_id " +
-            "WHERE student_order_status = 0 ORDER BY student_order_date";
+            "select so.*, ro.r_office_area_id, ro.r_office_name, " +
+                    "po_h.p_office_area_id h_p_office_area_id, po_h.p_office_name h_p_office_name, " +
+                    "po_w.p_office_area_id w_p_office_area_id, po_w.p_office_name w_p_office_name " +
+            "from jc_student_order so " +
+            "inner join jc_register_office ro on ro.r_office_id = so.register_office_id " +
+            "inner join jc_passport_office po_h ON po_h.p_office_id = so.h_passport_office_id " +
+            "inner join jc_passport_office po_w ON po_w.p_office_id = so.w_passport_office_id " +
+            "where student_order_status = 0 order by student_order_date";
 
     // TODO: 10/9/2019 refactoring - make one method
     private Connection getConnection() throws SQLException {
@@ -164,11 +169,14 @@ public class StudentOrderDaoImpl implements StudentOrderDao{
         adult.setPassportNumber(rs.getString(prefix + "passport_number"));
         adult.setIssueDate(rs.getDate(prefix + "passport_date").toLocalDate());
 
-        //Заглушка Паспортного стола
-        PassportOffice po = new PassportOffice(rs.getLong(prefix + "passport_office_id"), "", "");
+        //Данные паспортного стола из БД
+        Long poId = rs.getLong(prefix + "passport_office_id");
+        String poArea = rs.getString(prefix + "p_office_area_id");
+        String poName = rs.getString(prefix + "p_office_name");
+        PassportOffice po = new PassportOffice(poId, poArea, poName);
         adult.setIssueDepartment(po);
 
-        //Заглушка адреса и улицы
+        //Данные адреса и улицы из БД
         Address address = new Address();
         Street street = new Street(rs.getLong(prefix + "street_code"), "");
         address.setPostcode(rs.getString(prefix + "post_index"));
@@ -207,8 +215,7 @@ public class StudentOrderDaoImpl implements StudentOrderDao{
         so.setMarriageCertificateId(rs.getString("certificate_id"));
         so.setMarriageDate(rs.getDate("marriage_date").toLocalDate());
 
-        //Затычка офиса бракосочетания, пока мы не вынули данные из нужной таблицы
-        //для получения реальных данных этого офиса.
+        //Данные офиса бракосочетания из БД
         Long roId = rs.getLong("register_office_id");
         String areaId = rs.getString("r_office_area_id");
         String areaName = rs.getString("r_office_name");

@@ -49,7 +49,7 @@ public class SaveStudentOrder {
 
 //        StudentOrder s = buildStudentOrder(10);
         StudentOrderDao dao = new StudentOrderDaoImpl();
-//        Long id = dao.saveStudentOrder(s);                  //ID of last added student order in out database
+//       Long id = dao.saveStudentOrder(s);                  //ID of last added student order in out database
 //        System.out.println(id);
         //Разделитель
 //        System.out.println();
@@ -104,7 +104,7 @@ public class SaveStudentOrder {
         wife.setPassportSeria("" + (2000 + id));
         wife.setPassportNumber("" + (200000 + id));
         wife.setIssueDate(LocalDate.of(2018, 4, 5));
-        PassportOffice po2 = new PassportOffice(1, "", "");
+        PassportOffice po2 = new PassportOffice(2, "", "");
         wife.setIssueDepartment(po2);
         wife.setStudentId("" + (200000 + id));
         wife.setAddress(address);
