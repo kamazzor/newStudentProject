@@ -5,9 +5,12 @@ import edu.javaproject.studentorder.domain.*;
 import edu.javaproject.studentorder.exception.DaoException;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /***
  * That class implements methods and fields of {@link StudentOrderDao} interface.
@@ -56,7 +59,15 @@ public class StudentOrderDaoImpl implements StudentOrderDao{
             "inner join jc_register_office ro on ro.r_office_id = so.register_office_id " +
             "inner join jc_passport_office po_h ON po_h.p_office_id = so.h_passport_office_id " +
             "inner join jc_passport_office po_w ON po_w.p_office_id = so.w_passport_office_id " +
-            "where student_order_status = 0 order by student_order_date";
+            "where student_order_status = ? order by student_order_date";
+
+    // TODO: 10/15/2019 change that query
+    public static final String SELECT_CHILD =
+            "SELECT soc.*, ro.r_office_area_id, ro.r_office_name " +
+            "FROM jc_student_child soc " +
+            "INNER JOIN jc_register_office ro " +
+            "ON ro.r_office_id = soc.c_register_office_id " +
+            "WHERE student_order_id IN ";
 
     // TODO: 10/9/2019 refactoring - make one method
     private Connection getConnection() throws SQLException {
@@ -129,6 +140,8 @@ public class StudentOrderDaoImpl implements StudentOrderDao{
         try (Connection con = getConnection();
              PreparedStatement stmt = con.prepareStatement(SELECT_ORDERS)) {
 
+            stmt.setInt(1, StudentOrderStatus.START.ordinal());
+            List<Long> ids = new LinkedList<>();
             ResultSet rs = stmt.executeQuery();
             while (rs.next()){
                 StudentOrder so = new StudentOrder();
@@ -139,11 +152,11 @@ public class StudentOrderDaoImpl implements StudentOrderDao{
                 so.setHusband(husband);
                 so.setWife(wife);
 
-
-                // TODO: 10/14/2019 fill other fields of StudentOrder
-
                 result.add(so);
+                ids.add(so.getStudentOrderId());
             }
+
+            findChildren(con, result);
 
             rs.close();
 
@@ -152,7 +165,68 @@ public class StudentOrderDaoImpl implements StudentOrderDao{
         }
         return result;
     }
+
+    /**
+     * Method find childrens for each processed student order
+     * @param con Connection with out database
+     * @param result List of Student orders we process
+     * @throws SQLException
+     */
+    private void findChildren(Connection con, List<StudentOrder> result) throws SQLException{
+        //Создали добавку в SQL-запрос SELECT_CHILD с id обрабатываемых студенческих заявок
+        String cl = "(" + result.stream().map(so -> String.valueOf(so.getStudentOrderId()))
+                .collect(Collectors.joining(",")) + ")";
+
+        //Создаём Map: StudentOrderId -> student order object with that student order id
+        Map<Long, StudentOrder> studentOrdersMap = result.stream().collect(Collectors
+                .toMap(so -> so.getStudentOrderId(), so -> so));
+
+        try (PreparedStatement stmt = con.prepareStatement(SELECT_CHILD + cl)){
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                Child ch = fillChild(rs);
+                StudentOrder so = studentOrdersMap.get(rs.getLong("student_order_id"));
+                so.addChild(ch);
+            }
+        }
+    }
+
     //---------------------------------------------------------------------
+    /**
+     *  Fill fields of 1 Child example with data from our database.
+     * @param rs ResultSet after executing SELECT_CHILD query
+     * @return Return Child object
+     * @throws SQLException
+     */
+    private Child fillChild(ResultSet rs) throws SQLException {
+        String surName = rs.getString("c_sur_name");
+        String givenName = rs.getString("c_given_name");
+        String patronymic = rs.getString("c_patronymic");
+        LocalDate dateOfBirth = rs.getDate("c_date_of_birth").toLocalDate();
+
+        Child child = new Child(surName, givenName, patronymic, dateOfBirth);
+
+        child.setCertificateNumber(rs.getString("c_certificate_number"));
+        child.setIssueDate(rs.getDate("c_certificate_date").toLocalDate());
+
+        //Данные Офиса ЗАГСа, где родился ребенок
+        Long roId = rs.getLong("c_register_office_id");
+        String roArea = rs.getString("r_office_area_id");
+        String roName = rs.getString("r_office_name");
+        RegisterOffice ro = new RegisterOffice(roId, roArea, roName);
+        child.setIssueDepartment(ro);
+
+        Address address = new Address();
+        Street street = new Street(rs.getLong("c_street_code"), "");
+        address.setPostcode(rs.getString("c_post_index"));
+        address.setBuilding(rs.getString("c_building"));
+        address.setExtension(rs.getString("c_extension"));
+        address.setApartment(rs.getString("c_apartment"));
+        address.setStreet(street);
+        child.setAddress(address);
+
+        return child;
+    }
     /**
      *  Fill husband and wife fields of StudentOrder example with data from our database.
      * @param rs ResultSet after executing SELECT_ORDERS query
