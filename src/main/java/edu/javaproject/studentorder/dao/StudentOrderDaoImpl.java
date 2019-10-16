@@ -60,7 +60,8 @@ public class StudentOrderDaoImpl implements StudentOrderDao{
             "INNER JOIN jc_register_office ro on ro.r_office_id = so.register_office_id " +
             "INNER JOIN jc_passport_office po_h ON po_h.p_office_id = so.h_passport_office_id " +
             "INNER JOIN jc_passport_office po_w ON po_w.p_office_id = so.w_passport_office_id " +
-            "WHERE student_order_status = ? ORDER BY student_order_date";
+            "WHERE student_order_status = ? " +
+            "ORDER BY student_order_date LIMIT ?";
 
     public static final String SELECT_CHILD =
             "SELECT soc.*, ro.r_office_area_id, ro.r_office_name " +
@@ -79,7 +80,8 @@ public class StudentOrderDaoImpl implements StudentOrderDao{
             "INNER JOIN jc_passport_office po_w ON po_w.p_office_id = so.w_passport_office_id " +
             "INNER JOIN jc_student_child soc ON soc.student_order_id = so.student_order_id " +
             "INNER JOIN jc_register_office ro_c ON ro_c.r_office_id = soc.c_register_office_id " +
-            "WHERE student_order_status = ? ORDER BY student_order_date";
+            "WHERE student_order_status = ? " +
+            "ORDER BY so.student_order_id LIMIT ?";
 
     // TODO: 10/9/2019 refactoring - make one method
     private Connection getConnection() throws SQLException {
@@ -158,10 +160,14 @@ public class StudentOrderDaoImpl implements StudentOrderDao{
              PreparedStatement stmt = con.prepareStatement(SELECT_ORDERS_FULL)) {
 
             stmt.setInt(1, StudentOrderStatus.START.ordinal());
+            //Устанавливаем лимит обрабатываемых строк, задаваемый в запросе SELECT_ORDERS_FULL
+            int limit = Integer.parseInt(Config.getProperty(Config.DB_LIMIT));
+            stmt.setInt(2, limit);
 
             //Create Map: StudentOrderId -> student order object with that student order id
             Map<Long, StudentOrder> studentOrdersMap = new HashMap<>();
             ResultSet rs = stmt.executeQuery();
+            int counter = 0;
             while (rs.next()){
                 Long soId = rs.getLong("student_order_id");
 
@@ -175,7 +181,14 @@ public class StudentOrderDaoImpl implements StudentOrderDao{
                 }
                 StudentOrder so = studentOrdersMap.get(soId);
                 so.addChild(fillChild(rs));
+                counter++;
             }
+            //Отсекаем последнюю заявку, если на эту заявку пришлись строки в т.ч 1000-я и более
+            //из запроса SELECT_ORDERS_FULL
+            if (counter >= limit) {
+                result.remove(result.size()-1);
+            }
+
             rs.close();
 
         } catch (SQLException e){
@@ -191,6 +204,9 @@ public class StudentOrderDaoImpl implements StudentOrderDao{
              PreparedStatement stmt = con.prepareStatement(SELECT_ORDERS)) {
 
             stmt.setInt(1, StudentOrderStatus.START.ordinal());
+            //Устанавливаем лимит обрабатываемых строк, задаваемый в запросе SELECT_ORDERS_FULL
+            stmt.setInt(2, Integer.parseInt(Config.getProperty(Config.DB_LIMIT)));
+
             List<Long> ids = new LinkedList<>();
             ResultSet rs = stmt.executeQuery();
             while (rs.next()){
@@ -229,7 +245,7 @@ public class StudentOrderDaoImpl implements StudentOrderDao{
     }
 
     /**
-     * Method find childrens for each processed student order
+     * Method find children for each processed student order
      * @param con Connection with out database
      * @param result List of Student orders we process
      * @throws SQLException
