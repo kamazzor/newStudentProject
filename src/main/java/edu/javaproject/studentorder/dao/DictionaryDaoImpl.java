@@ -34,14 +34,9 @@ public class DictionaryDaoImpl implements DictionaryDao {
             "where area_id like ? and area_id <> ?";
 
 
-    // TODO: 10/9/2019 refactoring - make one method
     //Соединяемся с таблицей jc_student
     private Connection getConnection() throws SQLException {
-        Connection con = DriverManager.getConnection(
-                Config.getProperty(Config.DB_URL),
-                Config.getProperty(Config.DB_LOGIN),
-                Config.getProperty(Config.DB_PASSWORD));
-        return con;
+        return ConnectionBuilder.getConnection();
     }
 
     //Search for street in jc_street table by pattern typed in application web-form
