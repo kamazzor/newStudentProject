@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 
 public class StudentOrderDaoImplTest {
 
-    @BeforeClass
+//    @BeforeClass
     public static void startUp() throws Exception {
         DBInit.startUp();
     }
