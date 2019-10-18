@@ -47,9 +47,9 @@ public class SaveStudentOrder {
 //        }
 
 
-//        StudentOrder s = buildStudentOrder(10);
+        StudentOrder s = buildStudentOrder(10);
         StudentOrderDao dao = new StudentOrderDaoImpl();
-//       Long id = dao.saveStudentOrder(s);                  //ID of last added student order in out database
+       Long id = dao.saveStudentOrder(s);                  //ID of last added student order in out database
 //        System.out.println(id);
         //Разделитель
 //        System.out.println();
