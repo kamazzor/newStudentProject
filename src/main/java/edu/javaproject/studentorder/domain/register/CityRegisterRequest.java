@@ -23,7 +23,6 @@ public class CityRegisterRequest {
     }
 
     public CityRegisterRequest(Person person) {
-        // TODO: 10/28/2019
         surName = person.getSurName();
         givenName = person.getGivenName();
         patronymic = person.getPatronymic();

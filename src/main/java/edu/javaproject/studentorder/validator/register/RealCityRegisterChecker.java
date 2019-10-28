@@ -20,13 +20,19 @@ import javax.ws.rs.core.MediaType;
 public class RealCityRegisterChecker implements CityRegisterChecker {
     public CityRegisterResponse checkPerson(Person person) throws CityRegisterException {
 
-        CityRegisterRequest request = new CityRegisterRequest(person);
+        try {
+            CityRegisterRequest request = new CityRegisterRequest(person);
 
-        Client client = ClientBuilder.newClient();
-        CityRegisterResponse response = client.target(Config.getProperty(Config.CR_URL))
-                .request(MediaType.APPLICATION_JSON)
-                .post(Entity.entity(request, MediaType.APPLICATION_JSON))
-                .readEntity(CityRegisterResponse.class);
-        return response;
+            Client client = ClientBuilder.newClient();
+            CityRegisterResponse response = client.target(
+                    Config.getProperty(Config.CR_URL))
+                    .request(MediaType.APPLICATION_JSON)
+                    .post(Entity.entity(request, MediaType.APPLICATION_JSON))
+                    .readEntity(CityRegisterResponse.class);
+            return response;
+        } catch (Exception e) {
+            // TODO: 10/28/2019 catch exception normally
+            throw new CityRegisterException("City Register Error", e.getMessage(), e);
+        }
     }
 }
