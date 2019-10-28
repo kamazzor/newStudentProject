@@ -11,6 +11,8 @@
     <properties>
         <slf4j.version>1.7.28</slf4j.version>
         <log4j.version>2.12.1</log4j.version>
+        <jersey.version>2.28</jersey.version>
+        <jaxb.version>2.3.1</jaxb.version>
     </properties>
 
 
@@ -59,9 +61,38 @@
             <version>${log4j.version}</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.containers/jersey-container-servlet-core -->
+        <!-- Library can separate HTTP-request by logic parts-->
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.inject/jersey-hk2 -->
+        <!-- Library can do injections for HTTP-classes annotation-->
+        <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.media/jersey-media-moxy -->
+        <!--Jersey medi moxy library (@Providers) to convert data from/to JSON (XML) to/from HTTP language-->
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-moxy</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
 
+        <!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
+        <!--Additional JAX binding library to jersey media moxy library
+        to work with JSON (XML) more stable on Reflection stage-->
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>${jaxb.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -7,7 +7,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /***
- * Database connection builder. Database is specified in dao.properties
+ * Database connection builder. Database is specified in config.properties
  */
 public class ConnectionBuilder {
     public static Connection getConnection() throws SQLException {

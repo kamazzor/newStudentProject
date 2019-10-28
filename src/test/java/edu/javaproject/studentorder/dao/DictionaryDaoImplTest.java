@@ -7,18 +7,13 @@ import edu.javaproject.studentorder.domain.Street;
 import edu.javaproject.studentorder.exception.DaoException;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.sql.Connection;
-import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class DictionaryDaoImplTest {
     //Create logger
@@ -30,6 +25,7 @@ public class DictionaryDaoImplTest {
     }
 
     @Test
+    @Ignore
     public void testStreet() throws DaoException {
         LocalDateTime dt = LocalDateTime.now();
         logger.info("TEST {}", dt);

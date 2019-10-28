@@ -311,7 +311,8 @@ public class StudentOrderDaoImpl implements StudentOrderDao{
     private Adult fillAdult(ResultSet rs, String prefix) throws SQLException {
         Adult adult = new Adult();
         adult.setSurName(rs.getString(prefix + "sur_name"));
-        adult.setPatronymic(rs.getString(prefix + "given_name"));
+        adult.setGivenName(rs.getString(prefix + "given_name"));
+        adult.setPatronymic(rs.getString(prefix + "patronymic"));
         adult.setDateOfBirth(rs.getDate(prefix + "date_of_birth").toLocalDate());
         adult.setPassportSeria(rs.getString(prefix + "passport_seria"));
         adult.setPassportNumber(rs.getString(prefix + "passport_number"));
