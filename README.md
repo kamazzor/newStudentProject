@@ -11,4 +11,4 @@ Data Base - <b>PostreSQL 11, pgAdmin 4</b>
 
 Project management - <b>Maven, JUnit 4, Hibernate</b>
 
-(<i>In progress</i>) Framework - <b>Spring Boot</b> 
+Framework - <b>Spring Boot</b> 
